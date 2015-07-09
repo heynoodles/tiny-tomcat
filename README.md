@@ -10,6 +10,7 @@ tiny-tomcat
 ## 功能
 
 1. 获取静态资源。
+2. 支持简单的servlet。
 
 
 
@@ -37,4 +38,17 @@ tiny-tomcat
 测试url：
 	http://localhost:8080/index.html
 
-# TBC...
+# 第二部分：一个简单的servlet服务器
+
+功能：支持简单的servlet
+
+    git checkout step_2_simple_servlet_web_server
+
+一个servlet容器的作用是管理servlet并控制其生命周期。一般的，servlet的生命周期可以分为三步：
+ - 加载servlet，如果是第一次加载，则调用其init方法。
+ - 针对每一次请求，构造request、response，调用service方法。
+ - 卸载servlet，调用destroy。
+
+一个动态页面与一个静态页面的差异在于：同一个url，可以通过不同的参数、session、cookie等执行不同的逻辑，这里会包括操作数据、展现不同的页面等等。
+这个功能实现大致是如果uri中带有/dynamic/XXX，就会触发动态页面的逻辑（根据XXX，mapping到对应的servlet）。
+
