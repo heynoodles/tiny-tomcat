@@ -1,6 +1,8 @@
 package com.noodles.prompt;
 
 import com.google.common.base.Preconditions;
+import com.noodles.prompt.processor.ServletProcessor;
+import com.noodles.prompt.processor.StaticResoureProcessor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,14 +13,12 @@ import java.net.Socket;
 
 /**
  * 一个简单的服务器
- * 通过Uri来获取静态文件
+ * 通过Uri来获取静态c文件
  * @author gaoxin.wei
  */
 public class TinyTomcat {
 
     private boolean shutdown = false;
-
-    public static final String WEB_ROOT = "webroot";
 
     public void await() {
 
@@ -35,8 +35,14 @@ public class TinyTomcat {
                 Response response = Response.newInstance(request, output);
 
                 request.parse();
-                response.renderStaticResource();
-            } catch (IOException e) {
+
+                // todo 执行动态或静态
+                if (isDynamicRequest(request))
+                    new ServletProcessor().process(request, response);
+                else
+                    new StaticResoureProcessor().process(request, response);
+
+            } catch (Exception e) {
                 e.printStackTrace();
                 continue;
             } finally {
@@ -58,5 +64,10 @@ public class TinyTomcat {
             e.printStackTrace();
         }
         return serverSocket;
+    }
+
+    private boolean isDynamicRequest(Request request) {
+        // todo
+        return false;
     }
 }

@@ -32,7 +32,7 @@ public class Response {
      */
     public void renderStaticResource() throws IOException {
         byte[] bytes = new byte[BUFFER_SIZE];
-        InputStream fs = getInputStream(request);
+        InputStream fs = null;
         try {
             fs = getInputStream(request);
             if (fs != null) {
@@ -61,7 +61,7 @@ public class Response {
     }
 
     private InputStream getInputStream(Request request) {
-        URL url = this.getClass().getClassLoader().getResource(TinyTomcat.WEB_ROOT + request.getUri());
+        URL url = this.getClass().getClassLoader().getResource(Constants.WEB_ROOT + request.getUri());
         try {
             URLConnection urlConnection = url.openConnection();
             urlConnection.connect();
